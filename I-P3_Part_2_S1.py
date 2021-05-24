@@ -7,6 +7,7 @@
 # Author Email: cory.dunn@helsinki.fi
 # License: GPLv3
 # Version: A
+# Please cite DOI: 10.1101/2021.05.12.443844
 
 # Load dependencies
 
