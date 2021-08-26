@@ -6,7 +6,7 @@
 # Institution: University of Helsinki
 # Author Email: cory.dunn@helsinki.fi
 # License: GPLv3
-# Version: A
+# Version: B (AUG 26 2021)
 # Please cite DOI: 10.1101/2021.05.12.443844
 
 # Load dependencies
@@ -22,8 +22,8 @@ from Bio import AlignIO
 
 # Features set by user
 
-genbank_file_to_use = 'mito_synonymous_mammals_AND_A_punctatus.gb'
-file_prefix = 'MADPROPS_APR_21_2021_FINAL_'
+genbank_file_to_use = 'mammalian_mtDNA_NC_AUG_26_2021_Iguana_root.gb'
+file_prefix = 'AUG_26_P3_REV_'
 chosen_genes_set = {'ND1','ND2','COX1','COX2','ATP8','ATP6','COX3','ND3','ND4L','ND4','ND5','ND6','CYTB'} # vertebrates
 chosen_genes = list(sorted(chosen_genes_set))
 chosen_accession = 'NC_012920.1'
