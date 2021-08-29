@@ -6,31 +6,28 @@
 # Institution: University of Helsinki
 # Author Email: cory.dunn@helsinki.fi
 # License: GPLv3
-# Version: A
+# Version: B
 # Please cite DOI: 10.1101/2021.05.12.443844
 
 # Load dependencies
 
 import pandas as pd
-import numpy as np
 import os
-import sys
 import re
 from Bio import SeqIO
 from Bio.Seq import Seq
 import fileinput
-from Bio import AlignIO
-import numpy.polynomial.polynomial as poly
 
 # Features set by user
 
-genbank_file_to_use = 'mito_synonymous_mammals_AND_A_punctatus.gb'
+genbank_file_to_use = 'mammalian_mtDNA_NC_AUG_26_2021_Iguana_root.gb'
+file_prefix_early = 'AUG_26_P3_REV_'
 file_prefix = 'L2_' + 'MADPROPS_APR_21_2021_FINAL_'
 chosen_genes_set = {'ND1','ND2','COX1','COX2','ATP8','ATP6','COX3','ND3','ND4L','ND4','ND5','ND6','CYTB'} # vertebrates
 chosen_genes = list(chosen_genes_set)
 chosen_accession = 'NC_012920.1'
 reference_for_ungap = 'NC_012920_1_Homo_sapiens'
-besttree = 'mito_synonymous_best_tree_rooted_Anolis_punctatus.nwk'
+besttree = 'AUG_26_P3_REV_tree_rooted_Iguana_iguana.nwk'
 
 selected_accession = reference_for_ungap
 ancestral_tree = file_prefix + 'coding_DNA_sequence_concatenate_ASR.raxml.ancestralTree'
@@ -39,7 +36,7 @@ verbose_flag = 'y'
 
 # Ungap coding DNA sequence concatenate
 
-os.system('python ungap_on_reference.py -i ' + file_prefix + 'coding_DNA_sequence_concatenate_MAFFT_FFT_NS_2.fasta -o ' + file_prefix + 'coding_DNA_sequence_concatenate_MAFFT_FFT_NS_2_' + reference_for_ungap + '_ungap.fasta -r ' + reference_for_ungap) # ungap on reference
+os.system('python ungap_on_reference.py -i ' + file_prefix_early + 'coding_DNA_sequence_concatenate_MAFFT_FFT_NS_2.fasta -o ' + file_prefix + 'coding_DNA_sequence_concatenate_MAFFT_FFT_NS_2_' + reference_for_ungap + '_ungap.fasta -r ' + reference_for_ungap) # ungap on reference
 
 # Ancestral prediction on ungapped coding DNA sequence concatenate
 
@@ -48,7 +45,7 @@ os.system("raxml-ng --ancestral --msa " + file_prefix + 'coding_DNA_sequence_con
 # Run MAFFT with FFT_NS_2 on the output FASTA CDS files, ungap, then do ancestral prediction using the provided tree
 
 for gene in chosen_genes:
-    os.system("mafft --thread 4 --retree 2 --inputorder " + file_prefix + gene + ".fasta > " + file_prefix + gene + "_MAFFT_FFT_NS_2.fasta") # alignment
+    os.system("mafft --thread 4 --retree 2 --inputorder " + file_prefix_early + gene + ".fasta > " + file_prefix + gene + "_MAFFT_FFT_NS_2.fasta") # alignment
     os.system('python ungap_on_reference.py -i ' + file_prefix + gene + '_MAFFT_FFT_NS_2.fasta -o ' + file_prefix + gene + '_MAFFT_' + reference_for_ungap + '_ungap.fasta -r ' + reference_for_ungap) # ungap on reference
     os.system("raxml-ng --ancestral --msa " + file_prefix + gene + '_MAFFT_' + reference_for_ungap + '_ungap.fasta --tree ' + besttree + " --model GTR --prefix " + file_prefix + gene + "_ASR") # ancestral prediction by raxml-ng
     for line in fileinput.input(file_prefix + gene + "_ASR.raxml.ancestralStates", inplace=True): # Replace 'Node' with '>Node'
