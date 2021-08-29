@@ -22,7 +22,7 @@ import fileinput
 
 genbank_file_to_use = 'mammalian_mtDNA_NC_AUG_26_2021_Iguana_root.gb'
 file_prefix_early = 'AUG_26_P3_REV_'
-file_prefix = 'S1_' + 'MADPROPS_APR_21_2021_FINAL_'
+file_prefix = 'S1_' + 'AUG_26_P3_REV_'
 chosen_genes_set = {'ND1','ND2','COX1','COX2','ATP8','ATP6','COX3','ND3','ND4L','ND4','ND5','ND6','CYTB'} # vertebrates
 chosen_genes = list(chosen_genes_set)
 chosen_accession = 'NC_012920.1'
