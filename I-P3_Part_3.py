@@ -1,6 +1,12 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+# In[1]:
+
+
+#!/usr/bin/env python
+# coding: utf-8
+
 # Funding for this project was received from the European Research Council and the Sigrid Jusélius Foundation.
 # Author: Cory Dunn
 # Institution: University of Helsinki
@@ -14,6 +20,10 @@ import numpy as np
 from scipy.stats import ks_2samp
 import math
 
+
+# In[2]:
+
+
 # Read TSS data by P3 type
 
 two_fold_AG = pd.read_csv('two_fold_AG_P3_ALL.csv')
@@ -24,6 +34,10 @@ two_fold_CT = two_fold_CT.rename(columns = {'Unnamed: 8': 'Amino_merge'}, inplac
 
 four_fold = pd.read_csv('four_fold_P3_ALL.csv')
 four_fold = four_fold.rename(columns = {'Unnamed: 8': 'Amino_merge'}, inplace = False)
+
+
+# In[3]:
+
 
 # Save TSS data by amino acid
 
@@ -45,6 +59,10 @@ for amino_acid_two_fold_CT in two_fold_CT_amino_acids:
     subset_two_fold_CT = two_fold_CT[two_fold_CT['Amino_acid'] == amino_acid_two_fold_CT]
     subset_two_fold_CT.to_csv(amino_acid_two_fold_CT + '_degenerate.csv')
 
+
+# In[4]:
+
+
 # P-value and D-stat for AA versus TSS (four-fold degenerate)
 
 four_fold_AA_vs_TSS_KS_Dstat_DF = pd.DataFrame(index = four_fold_amino_acids,columns = four_fold_amino_acids)
@@ -64,6 +82,10 @@ four_fold_AA_vs_TSS_KS_Dstat_DF.to_csv('four_fold_compare_AA_to_TSS_by_KS_test_D
 four_fold_AA_vs_TSS_KS_Pvalue_DF.to_csv('four_fold_compare_AA_to_TSS_by_KS_test_uncorrected_Pvalue.csv')
 four_fold_AA_vs_TSS_KS_Pvalue_corrected_DF = four_fold_AA_vs_TSS_KS_Pvalue_DF * 21 # Twenty-one TSS comparisons performed across seven amino acid choices
 four_fold_AA_vs_TSS_KS_Pvalue_corrected_DF.to_csv('four_fold_compare_AA_to_TSS_by_KS_test_corrected_Pvalue.csv')
+
+
+# In[5]:
+
 
 # P-value and D-stat for AA versus TSS (two-fold AG)
 
@@ -85,6 +107,10 @@ two_fold_AG_AA_vs_TSS_KS_Pvalue_DF.to_csv('two_fold_AG_compare_AA_to_TSS_by_KS_t
 two_fold_AG_AA_vs_TSS_KS_Pvalue_corrected_DF = two_fold_AG_AA_vs_TSS_KS_Pvalue_DF * 10 # Ten TSS comparisons performed across seven amino acid choices
 two_fold_AG_AA_vs_TSS_KS_Pvalue_corrected_DF.to_csv('two_fold_AG_compare_AA_to_TSS_by_KS_test_corrected_Pvalue.csv')
 
+
+# In[6]:
+
+
 # P-value and D-stat for AA versus TSS (two-fold CT)
 
 two_fold_CT_AA_vs_TSS_KS_Dstat_DF = pd.DataFrame(index = two_fold_CT_amino_acids,columns = two_fold_CT_amino_acids)
@@ -105,15 +131,28 @@ two_fold_CT_AA_vs_TSS_KS_Pvalue_DF.to_csv('two_fold_CT_compare_AA_to_TSS_by_KS_t
 two_fold_CT_AA_vs_TSS_KS_Pvalue_corrected_DF = two_fold_CT_AA_vs_TSS_KS_Pvalue_DF * 28 # Twenty-eight TSS comparisons performed across seven amino acid choices
 two_fold_CT_AA_vs_TSS_KS_Pvalue_corrected_DF.to_csv('two_fold_CT_compare_AA_to_TSS_by_KS_test_corrected_Pvalue.csv')
 
+
+# In[7]:
+
+
+
 # Load processed HelixMTdb results not collapsed by amino acid change
 
 helixMTdb_NOT_grouped_by_AA = pd.read_csv('HelixMTdb_results_NOT_grouped_by_AA_change_single_nuc_sub_from_human_ref.csv')
+
+
+# In[8]:
+
 
 # Separate HelixMTdb into synonymous substitutions and non-synonymous substitutions
 
 helixMTdb_NOT_grouped_by_AA_syn = helixMTdb_NOT_grouped_by_AA[helixMTdb_NOT_grouped_by_AA['reference_amino_acid'] == helixMTdb_NOT_grouped_by_AA['mutant_amino_acid']]
 helixMTdb_NOT_grouped_by_AA_NONsyn = helixMTdb_NOT_grouped_by_AA[helixMTdb_NOT_grouped_by_AA['reference_amino_acid'] != helixMTdb_NOT_grouped_by_AA['mutant_amino_acid']]
 del helixMTdb_NOT_grouped_by_AA
+
+
+# In[9]:
+
 
 # Place synonymous variants into classes by frequency
 
@@ -130,6 +169,10 @@ helixMTdb_NOT_grouped_by_AA_syn['allele_status'] = np.where((helixMTdb_NOT_group
 helixMTdb_NOT_grouped_by_AA_syn['allele_status'] = np.where((helixMTdb_NOT_grouped_by_AA_syn['allele_frequency'] < .01) & (helixMTdb_NOT_grouped_by_AA_syn['allele_frequency'] >= .0001), 'Rare', helixMTdb_NOT_grouped_by_AA_syn['allele_status'])
 helixMTdb_NOT_grouped_by_AA_syn['allele_status'] = np.where((helixMTdb_NOT_grouped_by_AA_syn['allele_frequency'] < .0001) & (helixMTdb_NOT_grouped_by_AA_syn['allele_frequency'] > 0), 'Ultra-rare',helixMTdb_NOT_grouped_by_AA_syn['allele_status'])
 
+
+# In[10]:
+
+
 # Place non-synonymous variants into classes by frequency
 
 
@@ -144,6 +187,10 @@ helixMTdb_NOT_grouped_by_AA_NONsyn['allele_status'] = np.where(helixMTdb_NOT_gro
 helixMTdb_NOT_grouped_by_AA_NONsyn['allele_status'] = np.where((helixMTdb_NOT_grouped_by_AA_NONsyn['allele_frequency'] < .05) & (helixMTdb_NOT_grouped_by_AA_NONsyn['allele_frequency'] >= .01), 'Low-frequency', helixMTdb_NOT_grouped_by_AA_NONsyn['allele_status'])
 helixMTdb_NOT_grouped_by_AA_NONsyn['allele_status'] = np.where((helixMTdb_NOT_grouped_by_AA_NONsyn['allele_frequency'] < .01) & (helixMTdb_NOT_grouped_by_AA_NONsyn['allele_frequency'] >= .0001), 'Rare', helixMTdb_NOT_grouped_by_AA_NONsyn['allele_status'])
 helixMTdb_NOT_grouped_by_AA_NONsyn['allele_status'] = np.where((helixMTdb_NOT_grouped_by_AA_NONsyn['allele_frequency'] < .0001) & (helixMTdb_NOT_grouped_by_AA_NONsyn['allele_frequency'] > 0), 'Ultra-rare',helixMTdb_NOT_grouped_by_AA_NONsyn['allele_status'])
+
+
+# In[11]:
+
 
 # Generate CSV of synonymous variants based upon counts total
 
@@ -164,6 +211,11 @@ helixMTdb_NOT_grouped_by_AA_syn_more_than_ten_count = helixMTdb_NOT_grouped_by_A
 
 helixMTdb_NOT_grouped_by_AA_syn_more_than_ten_count.to_csv('HelixMTdb_synonymous_variant_set_more_than_nine.csv')
 
+
+# In[12]:
+
+
+
 # Generate CSV of non-synonymous variants based upon counts total
 
 try: 
@@ -183,11 +235,22 @@ helixMTdb_NOT_grouped_by_AA_NONsyn_more_than_ten_count = helixMTdb_NOT_grouped_b
 
 helixMTdb_NOT_grouped_by_AA_NONsyn_more_than_ten_count.to_csv('HelixMTdb_NONsynonymous_variant_set_more_than_nine.csv')
 
+
+# In[13]:
+
+
 # Generate CSV of I-P3s based upon allele frequency and four-fold degeneracy
 
-four_fold_w_HelixMTdb_counts = four_fold.set_index('Amino_merge').join(helixMTdb_NOT_grouped_by_AA_syn.set_index('Amino_merge'))
+four_fold['Amino_acid_copy_S_change'] = four_fold['Amino_acid']
+four_fold['Amino_acid_copy_S_change'] = four_fold['Amino_acid_copy_S_change'].str.replace('S1','S')
+four_fold['Amino_merge'] = four_fold['Protein'] + '_' + four_fold['Amino_acid_copy_S_change'] + four_fold['Amino_acid_position'].map(str)
+four_fold_w_HelixMTdb_counts = helixMTdb_NOT_grouped_by_AA_syn.merge(four_fold,on='Amino_merge')
 four_fold_w_HelixMTdb_counts.sort_values(by=['allele_frequency','TSS'],ascending=True,inplace=True)
 four_fold_w_HelixMTdb_counts.to_csv('four_fold_synonymous_w_HelixMTdb_counts.csv')
+
+
+# In[14]:
+
 
 # Make dataframe of above with counts total > 0 (four-fold degeneracy)
 
@@ -201,11 +264,23 @@ four_fold_w_HelixMTdb_counts_more_than_zero['mutation_type'] = np.where(four_fol
 four_fold_w_HelixMTdb_counts_more_than_zero.sort_values(by='counts_total',ascending=True, inplace=True)
 four_fold_w_HelixMTdb_counts_more_than_zero.to_csv('four_fold_synonymous_w_HelixMTdb_counts_more_than_zero_sorted_by_counts_total.csv')
 
+
+# In[15]:
+
+
 # Generate CSV of I-P3s based upon allele frequency and two-fold AG degeneracy
 
-two_fold_AG_w_HelixMTdb_counts = two_fold_AG.set_index('Amino_merge').join(helixMTdb_NOT_grouped_by_AA_syn.set_index('Amino_merge'))
+two_fold_AG['Amino_acid_copy_S_change'] = two_fold_AG['Amino_acid']
+#two_fold_AG['Amino_acid_copy_S_change'] = two_fold_AG['Amino_acid_copy_S_change'].str.replace('S1','S')
+two_fold_AG['Amino_merge'] = two_fold_AG['Protein'] + '_' + two_fold_AG['Amino_acid_copy_S_change'] + two_fold_AG['Amino_acid_position'].map(str)
+two_fold_AG_w_HelixMTdb_counts = helixMTdb_NOT_grouped_by_AA_syn.merge(two_fold_AG,on='Amino_merge')
 two_fold_AG_w_HelixMTdb_counts.sort_values(by=['allele_frequency','TSS'],ascending=True,inplace=True)
 two_fold_AG_w_HelixMTdb_counts.to_csv('two_fold_AG_synonymous_w_HelixMTdb_counts.csv')
+
+
+# In[16]:
+
+
 
 # Make dataframe of above with counts total > 0 (two-fold AG degeneracy)
 
@@ -213,17 +288,35 @@ two_fold_AG_w_HelixMTdb_counts_more_than_zero = two_fold_AG_w_HelixMTdb_counts[t
 two_fold_AG_w_HelixMTdb_counts_more_than_zero.sort_values(by='counts_total', ascending=True, inplace=True)
 two_fold_AG_w_HelixMTdb_counts_more_than_zero.to_csv('two_fold_AG_synonymous_w_HelixMTdb_counts_more_than_zero_sorted_by_counts_total.csv')
 
+
+# In[17]:
+
+
+
 # Generate CSV of I-P3s based upon allele frequency and two-fold CT degeneracy
 
-two_fold_CT_w_HelixMTdb_counts = two_fold_CT.set_index('Amino_merge').join(helixMTdb_NOT_grouped_by_AA_syn.set_index('Amino_merge'))
+two_fold_CT['Amino_acid_copy_S_change'] = two_fold_CT['Amino_acid']
+two_fold_CT['Amino_acid_copy_S_change'] = two_fold_CT['Amino_acid_copy_S_change'].str.replace('S2','S')
+two_fold_CT['Amino_merge'] = two_fold_CT['Protein'] + '_' + two_fold_CT['Amino_acid_copy_S_change'] + two_fold_CT['Amino_acid_position'].map(str)
+two_fold_CT_w_HelixMTdb_counts = helixMTdb_NOT_grouped_by_AA_syn.merge(two_fold_CT,on='Amino_merge')
 two_fold_CT_w_HelixMTdb_counts.sort_values(by=['allele_frequency','TSS'],ascending=True,inplace=True)
 two_fold_CT_w_HelixMTdb_counts.to_csv('two_fold_CT_synonymous_w_HelixMTdb_counts.csv')
+
+
+# In[18]:
+
+
 
 # Make dataframe of above with counts total > 0 (two-fold CT degeneracy)
 
 two_fold_CT_w_HelixMTdb_counts_more_than_zero = two_fold_CT_w_HelixMTdb_counts[two_fold_CT_w_HelixMTdb_counts['counts_total'] > 0]
 two_fold_CT_w_HelixMTdb_counts_more_than_zero.sort_values(by='counts_total', ascending=True, inplace=True)
 two_fold_CT_w_HelixMTdb_counts_more_than_zero.to_csv('two_fold_CT_synonymous_w_HelixMTdb_counts_more_than_zero_sorted_by_counts_total.csv')
+
+
+# In[19]:
+
+
 
 # P-value and D-stat for four-fold class versus TSS [Kolmogorov-Smirnov analysis]
 
@@ -247,6 +340,11 @@ four_fold_KS_Pvalue_DF.to_csv('four_fold_compare_variant_class_to_TSS_by_KS_test
 four_fold_KS_Pvalue_corrected_DF = four_fold_KS_Pvalue_DF * 6 # six TSS comparisons performed across four classes COMMON NOT INCLUDED DUE TO LOW NUMBERS
 four_fold_KS_Pvalue_corrected_DF.to_csv('four_fold_compare_variant_class_to_TSS_by_KS_test_corrected_Pvalue.csv')
 
+
+# In[20]:
+
+
+
 # P-value and D-stat for two-fold AG class versus TSS [Kolmogorov-Smirnov analysis]
 
 variant_classes = ['Absent','Ultra-rare','Rare','Low-frequency','Common']
@@ -269,6 +367,11 @@ two_fold_AG_KS_Pvalue_DF.to_csv('two_fold_AG_compare_variant_class_to_TSS_by_KS_
 two_fold_AG_KS_Pvalue_corrected_DF = two_fold_AG_KS_Pvalue_DF * 6 # six TSS comparisons performed across four classes COMMON NOT INCLUDED DUE TO LOW NUMBERS
 two_fold_AG_KS_Pvalue_corrected_DF.to_csv('two_fold_AG_compare_variant_class_to_TSS_by_KS_test_corrected_Pvalue.csv')
 
+
+# In[21]:
+
+
+
 # P-value and D-stat for two-fold CT class versus TSS [Kolmogorov-Smirnov analysis]
 
 variant_classes = ['Absent','Ultra-rare','Rare','Low-frequency','Common']
@@ -290,3 +393,16 @@ two_fold_CT_KS_Dstat_DF.to_csv('two_fold_CT_compare_variant_class_to_TSS_by_KS_t
 two_fold_CT_KS_Pvalue_DF.to_csv('two_fold_CT_compare_variant_class_to_TSS_by_KS_test_uncorrected_Pvalue.csv')
 two_fold_CT_KS_Pvalue_corrected_DF = two_fold_CT_KS_Pvalue_DF * 6 # six TSS comparisons performed across four classes COMMON NOT INCLUDED DUE TO LOW NUMBERS
 two_fold_CT_KS_Pvalue_corrected_DF.to_csv('two_fold_CT_compare_variant_class_to_TSS_by_KS_test_corrected_Pvalue.csv')
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
