@@ -6,7 +6,7 @@
 # Institution: University of Helsinki
 # Author Email: cory.dunn@helsinki.fi
 # License: GPLv3
-# Version: A
+# Version: B
 # Please cite DOI: 10.1101/2021.05.12.443844
 
 # Load dependencies
@@ -18,8 +18,8 @@ from Bio.Seq import Seq
 
 # Features set by user
 
-genbank_file_to_use = 'mito_synonymous_mammals_WO_A_punctatus.gb'
-file_prefix = 'codon_third_positions_APR_27_2021_'
+genbank_file_to_use = 'mammalian_mtDNA_NC_AUG_26_2021_noroot.gb'
+file_prefix = 'codon_third_positions_AUG_26_2021_'
 chosen_genes_set = {'ND1','ND2','COX1','COX2','ATP8','ATP6','COX3','ND3','ND4L','ND4','ND5','ND6','CYTB'} # vertebrates
 chosen_genes = list(chosen_genes_set)
 codon_table = 2 ## vertebrate mitochondrial table
