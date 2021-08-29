@@ -6,7 +6,7 @@
 # Institution: University of Helsinki
 # Author Email: cory.dunn@helsinki.fi
 # License: GPLv3
-# Version: A
+# Version: B
 # Please cite DOI: 10.1101/2021.05.12.443844
 
 import pandas as pd
@@ -16,13 +16,13 @@ import math
 
 # Read TSS data by P3 type
 
-two_fold_AG = pd.read_csv('two_fold_AG_P3_TSS.csv')
+two_fold_AG = pd.read_csv('two_fold_AG_P3_ALL.csv')
 two_fold_AG = two_fold_AG.rename(columns = {'Unnamed: 7': 'Amino_merge'}, inplace = False)
 
-two_fold_CT = pd.read_csv('two_fold_CT_P3_TSS.csv')
+two_fold_CT = pd.read_csv('two_fold_CT_P3_ALL.csv')
 two_fold_CT = two_fold_CT.rename(columns = {'Unnamed: 8': 'Amino_merge'}, inplace = False)
 
-four_fold = pd.read_csv('four_fold_P3_TSS.csv')
+four_fold = pd.read_csv('four_fold_P3_ALL.csv')
 four_fold = four_fold.rename(columns = {'Unnamed: 8': 'Amino_merge'}, inplace = False)
 
 # Save TSS data by amino acid
